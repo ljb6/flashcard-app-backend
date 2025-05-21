@@ -15,7 +15,7 @@ func InitializeServer(db *sql.DB) {
 	// Allows to receives request from different origins
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"}, // frontend
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		AllowCredentials: true,
 		ExposeHeaders:    []string{"Content-Length"},
