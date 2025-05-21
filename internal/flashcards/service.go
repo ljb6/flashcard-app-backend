@@ -1,6 +1,9 @@
 package flashcards
 
-import "errors"
+import (
+	"encoding/json"
+	"errors"
+)
 
 type FlashcardService struct {
 	repository *FlashcardRepository
@@ -22,3 +25,18 @@ func (s *FlashcardService) CreateFlashcard(front, back string) error {
 
 	return nil
 }
+
+func (s *FlashcardService) GetFlashcards() ([]byte, error) {
+	flashcards, err := s.repository.GetFlashcards()
+	if err != nil {
+		return nil, err
+	}
+
+	jsonFlashcards, err := json.Marshal(flashcards)
+	if err != nil {
+		return nil, errors.New("error in marshal")
+	}
+
+	return jsonFlashcards, nil
+}
+	

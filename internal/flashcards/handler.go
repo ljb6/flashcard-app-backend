@@ -32,3 +32,13 @@ func (h *FlashcardHandler) CreateFlashcardHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "flashcard added with success"})
 }
+
+func (h *FlashcardHandler) GetFlashcardsHandler(c *gin.Context) {
+	jsonFlashcards, err := h.service.GetFlashcards()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get flashcards"})
+		return
+	}
+
+	c.Data(http.StatusOK, "application/json", jsonFlashcards)
+}

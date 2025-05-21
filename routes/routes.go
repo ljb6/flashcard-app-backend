@@ -17,6 +17,8 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 
 	flashcardGroup := router.Group("/flashcards")
 	flashcardGroup.POST("/create-flashcard", flashcardsHandler.CreateFlashcardHandler)
+	flashcardGroup.GET("/get-flashcards", flashcardsHandler.GetFlashcardsHandler)
+
 
 	router.GET("/ping", func(c *gin.Context) {
     c.JSON(200, gin.H{

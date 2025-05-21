@@ -1,6 +1,9 @@
 package flashcards
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+)
 
 type FlashcardRepository struct {
 	DB *sql.DB
@@ -17,4 +20,26 @@ func (r *FlashcardRepository) CreateFlashcard(front, back string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *FlashcardRepository) GetFlashcards() ([]Flashcard, error) {
+	query := `SELECT id, front, back, created_at FROM flashcards`
+	rows, err := r.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var flashcards []Flashcard
+
+	for rows.Next() {
+		var flashcard Flashcard
+		err := rows.Scan(&flashcard.ID, &flashcard.Front, &flashcard.Back, &flashcard.CreatedAt)
+		if err != nil {
+			return nil, errors.New("error while scaning parameters")
+		}
+		flashcards = append(flashcards, flashcard)
+	}
+
+	return flashcards, nil
 }
