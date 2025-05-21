@@ -60,3 +60,22 @@ func (h *FlashcardHandler) DeleteFlashcardByIDHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "flashcard deleted with success"})
 }
+
+func (h *FlashcardHandler) EditFlashcardByIDHandler(c *gin.Context) {
+
+	var req Flashcard;
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid parameters"})
+		return
+	}
+
+	err = h.service.EditFlashcardByID(req.ID, req.Front, req.Back)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "flashcard updated with success"})
+}

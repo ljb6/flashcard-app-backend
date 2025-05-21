@@ -48,3 +48,15 @@ func (s *FlashcardService) DeleteFlashcardByID(id int) error {
 	return nil
 }
 	
+func (s *FlashcardService) EditFlashcardByID(id int, front, back string) error {
+	if len(front) > 250 || len(back) > 250 {
+		return errors.New("flashcard content exceeds maximum length of 250 characters")
+	}
+
+	err := s.repository.EditFlashcardByID(id, front, back)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -52,3 +52,12 @@ func (r *FlashcardRepository) DeleteFlashcardByID(id int) error {
 	}
 	return nil
 }
+
+func (r *FlashcardRepository) EditFlashcardByID(id int, front, back string) error {
+	query := `UPDATE flashcards SET front = $1, back = $2 WHERE id = $3`
+	_, err := r.DB.Exec(query, front, back, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
