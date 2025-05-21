@@ -43,3 +43,12 @@ func (r *FlashcardRepository) GetFlashcards() ([]Flashcard, error) {
 
 	return flashcards, nil
 }
+
+func (r *FlashcardRepository) DeleteFlashcardByID(id int) error {
+	query := `DELETE FROM flashcards WHERE id = $1`
+	_, err := r.DB.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

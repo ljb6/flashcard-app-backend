@@ -17,6 +17,7 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 
 	flashcardGroup := router.Group("/flashcards")
 	flashcardGroup.POST("/create-flashcard", flashcardsHandler.CreateFlashcardHandler)
+	flashcardGroup.POST("/delete-flashcard", flashcardsHandler.DeleteFlashcardByIDHandler)
 	flashcardGroup.GET("/get-flashcards", flashcardsHandler.GetFlashcardsHandler)
 
 

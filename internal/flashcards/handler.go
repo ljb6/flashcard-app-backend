@@ -1,6 +1,6 @@
 package flashcards
 
-import (
+import (	
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -41,4 +41,22 @@ func (h *FlashcardHandler) GetFlashcardsHandler(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "application/json", jsonFlashcards)
+}
+
+func (h *FlashcardHandler) DeleteFlashcardByIDHandler(c *gin.Context) {
+	
+	var flashcard Flashcard
+	err := c.ShouldBindJSON(&flashcard)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid flashcard"})
+		return
+	}
+
+	err = h.service.DeleteFlashcardByID(flashcard.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to delete flashcard"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "flashcard deleted with success"})
 }

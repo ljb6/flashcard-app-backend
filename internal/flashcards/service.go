@@ -39,4 +39,12 @@ func (s *FlashcardService) GetFlashcards() ([]byte, error) {
 
 	return jsonFlashcards, nil
 }
+
+func (s *FlashcardService) DeleteFlashcardByID(id int) error {
+	err := s.repository.DeleteFlashcardByID(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 	
