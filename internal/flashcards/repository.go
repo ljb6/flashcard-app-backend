@@ -61,3 +61,12 @@ func (r *FlashcardRepository) EditFlashcardByID(id int, front, back string) erro
 	}
 	return nil
 }
+
+func (r *FlashcardRepository) DeleteAllFlashcards() error {
+	query := `DELETE FROM flashcards`
+	_, err := r.DB.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}

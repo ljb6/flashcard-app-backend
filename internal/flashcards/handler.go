@@ -79,3 +79,14 @@ func (h *FlashcardHandler) EditFlashcardByIDHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "flashcard updated with success"})
 }
+
+func (h *FlashcardHandler) DeleteAllFlashcardsHandler(c *gin.Context) {
+
+	err := h.service.DeleteAllFlashcards()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "flashcard deleted with success"})
+}

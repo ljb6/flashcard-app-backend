@@ -60,3 +60,11 @@ func (s *FlashcardService) EditFlashcardByID(id int, front, back string) error {
 
 	return nil
 }
+
+func (s *FlashcardService) DeleteAllFlashcards() error {
+	err := s.repository.DeleteAllFlashcards()
+	if err != nil {
+		return err
+	}
+	return nil
+}
