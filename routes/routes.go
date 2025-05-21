@@ -19,7 +19,8 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	flashcardGroup.POST("/delete", flashcardsHandler.DeleteFlashcardByIDHandler)
 	flashcardGroup.POST("/deleteall", flashcardsHandler.DeleteAllFlashcardsHandler)
 	flashcardGroup.PATCH("/update", flashcardsHandler.EditFlashcardByIDHandler)
-	flashcardGroup.GET("/get", flashcardsHandler.GetFlashcardsHandler)
+	// usando POST por conta do body
+	flashcardGroup.POST("/get", flashcardsHandler.GetFlashcardsHandler)
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

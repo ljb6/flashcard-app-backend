@@ -3,6 +3,7 @@ package flashcards
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 )
 
 type FlashcardRepository struct {
@@ -22,8 +23,17 @@ func (r *FlashcardRepository) CreateFlashcard(front, back string) error {
 	return nil
 }
 
-func (r *FlashcardRepository) GetFlashcards() ([]Flashcard, error) {
-	query := `SELECT id, front, back, created_at FROM flashcards`
+func (r *FlashcardRepository) GetFlashcards(req GetFlashcardsReq) ([]Flashcard, error) {
+	
+	var query string
+
+	switch req.ReqType {
+	case "random":
+		query = fmt.Sprintf("SELECT id, front, back, created_at FROM flashcards ORDER BY RANDOM() LIMIT %d", req.Quantity)
+	default:
+		query = "SELECT id, front, back, created_at FROM flashcards"
+	}
+
 	rows, err := r.DB.Query(query)
 	if err != nil {
 		return nil, err

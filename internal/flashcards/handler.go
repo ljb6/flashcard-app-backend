@@ -34,7 +34,16 @@ func (h *FlashcardHandler) CreateFlashcardHandler(c *gin.Context) {
 }
 
 func (h *FlashcardHandler) GetFlashcardsHandler(c *gin.Context) {
-	jsonFlashcards, err := h.service.GetFlashcards()
+
+	var req GetFlashcardsReq
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "request format error"})
+		return
+	}
+
+	jsonFlashcards, err := h.service.GetFlashcards(req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get flashcards"})
 		return

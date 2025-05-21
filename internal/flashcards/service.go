@@ -26,8 +26,8 @@ func (s *FlashcardService) CreateFlashcard(front, back string) error {
 	return nil
 }
 
-func (s *FlashcardService) GetFlashcards() ([]byte, error) {
-	flashcards, err := s.repository.GetFlashcards()
+func (s *FlashcardService) GetFlashcards(req GetFlashcardsReq) ([]byte, error) {
+	flashcards, err := s.repository.GetFlashcards(req)
 	if err != nil {
 		return nil, err
 	}

@@ -8,3 +8,8 @@ type Flashcard struct {
 	Back      string    `jsond:"back"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type GetFlashcardsReq struct {
+	ReqType  string `jsond:"req_type"`
+	Quantity int    `jsond:"quantity"`
+}
