@@ -28,8 +28,22 @@ func (s *FlashcardService) CreateFlashcard(front, back string) error {
 	return nil
 }
 
-func (s *FlashcardService) GetFlashcards(req GetFlashcardsReq) ([]byte, error) {
-	flashcards, err := s.repository.GetFlashcards(req)
+func (s *FlashcardService) GetAllFlashcards() ([]byte, error) {
+	flashcards, err := s.repository.GetAllFlashcards()
+	if err != nil {
+		return nil, err
+	}
+
+	jsonFlashcards, err := json.Marshal(flashcards)
+	if err != nil {
+		return nil, errors.New("error in marshal")
+	}
+
+	return jsonFlashcards, nil
+}
+
+func (s *FlashcardService) GetXFlashcards(req GetFlashcardsReq) ([]byte, error) {
+	flashcards, err := s.repository.GetXFlashcards(req)
 	if err != nil {
 		return nil, err
 	}

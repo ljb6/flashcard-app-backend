@@ -16,7 +16,6 @@ type Flashcard struct {
 var ReviewIntervals = []int{0, 1, 3, 7, 15, 30}
 
 type GetFlashcardsReq struct {
-	ReqType  string `json:"req_type"`
 	Quantity int    `json:"quantity"`
 }
 

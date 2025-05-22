@@ -14,21 +14,20 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	flashcardsService := flashcards.NewFlashcardService(flashcardsRepo)
 	flashcardsHandler := flashcards.NewFlashcardHandlers(flashcardsService)
 
+	// localhost:8080/flashcards/...
 	flashcardGroup := router.Group("/flashcards")
+
+	// POST
 	flashcardGroup.POST("/create", flashcardsHandler.CreateFlashcardHandler)
 	flashcardGroup.POST("/delete", flashcardsHandler.DeleteFlashcardByIDHandler)
-	flashcardGroup.POST("/deleteall", flashcardsHandler.DeleteAllFlashcardsHandler)
+	flashcardGroup.POST("/delete-all", flashcardsHandler.DeleteAllFlashcardsHandler)
+	flashcardGroup.POST("/get-random", flashcardsHandler.GetXRandomFlashcards) // post por conta do body
+
+	// PATCH 
 	flashcardGroup.PATCH("/update", flashcardsHandler.EditFlashcardByIDHandler)
 	flashcardGroup.PATCH("/update-stats", flashcardsHandler.UpdateFlashcardFieldsByIDHandler)
-	// usando POST por conta do body
-	flashcardGroup.POST("/get", flashcardsHandler.GetFlashcardsHandler)
+	
+	// GET
+	flashcardGroup.GET("/get-all", flashcardsHandler.GetAllFlashcardsHandler)
 	flashcardGroup.GET("/get-due", flashcardsHandler.GetDueFlashcardsHandler)
-
-
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
 }

@@ -33,7 +33,18 @@ func (h *FlashcardHandler) CreateFlashcardHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "flashcard added with success"})
 }
 
-func (h *FlashcardHandler) GetFlashcardsHandler(c *gin.Context) {
+func (h *FlashcardHandler) GetAllFlashcardsHandler(c *gin.Context) {
+
+	jsonFlashcards, err := h.service.GetAllFlashcards()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get all flashcards"})
+		return
+	}
+
+	c.Data(http.StatusOK, "application/json", jsonFlashcards)
+}
+
+func (h *FlashcardHandler) GetXRandomFlashcards(c *gin.Context) {
 
 	var req GetFlashcardsReq
 
@@ -43,7 +54,7 @@ func (h *FlashcardHandler) GetFlashcardsHandler(c *gin.Context) {
 		return
 	}
 
-	jsonFlashcards, err := h.service.GetFlashcards(req)
+	jsonFlashcards, err := h.service.GetXFlashcards(req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get flashcards"})
 		return

@@ -23,16 +23,8 @@ func (r *FlashcardRepository) CreateFlashcard(front, back string) error {
 	return nil
 }
 
-func (r *FlashcardRepository) GetFlashcards(req GetFlashcardsReq) ([]Flashcard, error) {
-
-	var query string
-
-	switch req.ReqType {
-	case "random":
-		query = fmt.Sprintf("SELECT id, front, back, created_at FROM flashcards ORDER BY RANDOM() LIMIT %d", req.Quantity)
-	default:
-		query = "SELECT id, front, back, created_at FROM flashcards"
-	}
+func (r *FlashcardRepository) GetAllFlashcards() ([]Flashcard, error) {
+	query := "SELECT id, front, back, created_at, last_review, review_stage, correct_answers, incorrect_answers FROM flashcards"
 
 	rows, err := r.DB.Query(query)
 	if err != nil {
@@ -43,12 +35,37 @@ func (r *FlashcardRepository) GetFlashcards(req GetFlashcardsReq) ([]Flashcard, 
 	var flashcards []Flashcard
 
 	for rows.Next() {
-		var flashcard Flashcard
-		err := rows.Scan(&flashcard.ID, &flashcard.Front, &flashcard.Back, &flashcard.CreatedAt)
+		var card Flashcard
+		err := rows.Scan(&card.ID, &card.Front, &card.Back, &card.CreatedAt, &card.LastReview,
+            &card.ReviewStage, &card.CorrectAnswers, &card.IncorrectAnswers)
+		if err != nil {
+			return nil, errors.New("error while scanning parameters")
+		}
+		flashcards = append(flashcards, card)
+	}
+
+	return flashcards, nil
+}
+
+func (r *FlashcardRepository) GetXFlashcards(req GetFlashcardsReq) ([]Flashcard, error) {
+	query := fmt.Sprintf("SELECT id, front, back, created_at, last_review, review_stage, correct_answers, incorrect_answers FROM flashcards ORDER BY RANDOM() LIMIT %d", req.Quantity)
+
+	rows, err := r.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var flashcards []Flashcard
+
+	for rows.Next() {
+		var card Flashcard
+		err := rows.Scan(&card.ID, &card.Front, &card.Back, &card.CreatedAt, &card.LastReview,
+            &card.ReviewStage, &card.CorrectAnswers, &card.IncorrectAnswers)
 		if err != nil {
 			return nil, errors.New("error while scaning parameters")
 		}
-		flashcards = append(flashcards, flashcard)
+		flashcards = append(flashcards, card)
 	}
 
 	return flashcards, nil
