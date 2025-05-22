@@ -21,7 +21,8 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	flashcardGroup.POST("/create", flashcardsHandler.CreateFlashcardHandler)
 	flashcardGroup.POST("/delete", flashcardsHandler.DeleteFlashcardByIDHandler)
 	flashcardGroup.POST("/delete-all", flashcardsHandler.DeleteAllFlashcardsHandler)
-	flashcardGroup.POST("/get-random", flashcardsHandler.GetXRandomFlashcards) // post por conta do body
+	flashcardGroup.POST("/get-random", flashcardsHandler.GetXRandomFlashcardsHandler) // post por conta do body
+	flashcardGroup.POST("/get-error", flashcardsHandler.GetXRandomFlashcardsByErrorHandler) // post por conta do body
 
 	// PATCH 
 	flashcardGroup.PATCH("/update", flashcardsHandler.EditFlashcardByIDHandler)

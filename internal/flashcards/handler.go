@@ -44,7 +44,7 @@ func (h *FlashcardHandler) GetAllFlashcardsHandler(c *gin.Context) {
 	c.Data(http.StatusOK, "application/json", jsonFlashcards)
 }
 
-func (h *FlashcardHandler) GetXRandomFlashcards(c *gin.Context) {
+func (h *FlashcardHandler) GetXRandomFlashcardsHandler(c *gin.Context) {
 
 	var req GetFlashcardsReq
 
@@ -55,6 +55,25 @@ func (h *FlashcardHandler) GetXRandomFlashcards(c *gin.Context) {
 	}
 
 	jsonFlashcards, err := h.service.GetXFlashcards(req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get flashcards"})
+		return
+	}
+
+	c.Data(http.StatusOK, "application/json", jsonFlashcards)
+}
+
+func (h *FlashcardHandler) GetXRandomFlashcardsByErrorHandler(c *gin.Context) {
+
+	var req GetFlashcardsReq
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "request format error"})
+		return
+	}
+
+	jsonFlashcards, err := h.service.GetXFlashcardsByError(req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get flashcards"})
 		return

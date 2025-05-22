@@ -56,6 +56,20 @@ func (s *FlashcardService) GetXFlashcards(req GetFlashcardsReq) ([]byte, error) 
 	return jsonFlashcards, nil
 }
 
+func (s *FlashcardService) GetXFlashcardsByError(req GetFlashcardsReq) ([]byte, error) {
+	flashcards, err := s.repository.GetXFlashcardsByError(req)
+	if err != nil {
+		return nil, err
+	}
+
+	jsonFlashcards, err := json.Marshal(flashcards)
+	if err != nil {
+		return nil, errors.New("error in marshal")
+	}
+
+	return jsonFlashcards, nil
+}
+
 func (s *FlashcardService) DeleteFlashcardByID(id int) error {
 	err := s.repository.DeleteFlashcardByID(id)
 	if err != nil {
