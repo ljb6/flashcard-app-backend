@@ -16,6 +16,7 @@ func main() {
 	}
 
 	flashcards.GetKeys()
+	database.GetDBPassword()
 
 	db := database.ConnectDB()
 	defer db.Close()

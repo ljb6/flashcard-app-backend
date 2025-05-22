@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 )
 
@@ -19,7 +20,9 @@ func CreateTables(db *sql.DB) {
 	);`
 
 	_, err := db.Exec(flashcardsTable)
+	fmt.Println(err)
 	if err != nil {
+		fmt.Println(err)
 		log.Fatal("Error while creating flashcards table")
 	}
 }
