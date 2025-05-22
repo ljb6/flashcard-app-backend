@@ -26,7 +26,7 @@ func (r *FlashcardRepository) CreateFlashcard(front, back string) error {
 func (r *FlashcardRepository) GetFlashcards(req GetFlashcardsReq) ([]Flashcard, error) {
 	
 	var query string
-	
+
 	switch req.ReqType {
 	case "random":
 		query = fmt.Sprintf("SELECT id, front, back, created_at FROM flashcards ORDER BY RANDOM() LIMIT %d", req.Quantity)

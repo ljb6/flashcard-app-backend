@@ -8,6 +8,7 @@ type Flashcard struct {
 	Back           string     `json:"back"`
 	CreatedAt      time.Time  `json:"created_at"`
 	LastReview     *time.Time `json:"last_review"`
+	ReviewStage    int        `json:"review_stage"`
 	CorrectAnswers int        `json:"correct_answers"`
 	Tries          int        `json:"tries"`
 }
