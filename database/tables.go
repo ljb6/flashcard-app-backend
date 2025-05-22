@@ -11,8 +11,11 @@ func CreateTables(db *sql.DB) {
 		id SERIAL PRIMARY KEY,
 		front VARCHAR(255) NOT NULL,
 		back VARCHAR(255) NOT NULL,
-		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		)`
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		last_review TIMESTAMP NULL,
+		correct_answers INTEGER DEFAULT 0,
+		tries INTEGER DEFAULT 0
+	);`
 
 	_, err := db.Exec(flashcardsTable)
 	if err != nil {
