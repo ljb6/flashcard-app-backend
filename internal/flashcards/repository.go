@@ -101,3 +101,53 @@ func (r *FlashcardRepository) UpdateFlashcardFields(card Flashcard) error {
 	}
 	return nil
 }
+
+func (r *FlashcardRepository) GetDueFlashcards() ([]Flashcard, error) {
+    var dueCards []Flashcard
+
+    query1 := `SELECT id, front, back, created_at, last_review, review_stage, correct_answers, incorrect_answers 
+               FROM flashcards 
+               WHERE last_review IS NULL`
+    
+    rows1, err := r.DB.Query(query1)
+    if err != nil {
+        return nil, err
+    }
+    defer rows1.Close()
+
+    for rows1.Next() {
+        var card Flashcard
+        err := rows1.Scan(&card.ID, &card.Front, &card.Back, &card.CreatedAt, &card.LastReview,
+            &card.ReviewStage, &card.CorrectAnswers, &card.IncorrectAnswers)
+        if err != nil {
+            return nil, err
+        }
+        dueCards = append(dueCards, card)
+    }
+
+    for stage, interval := range ReviewIntervals {
+        query := `SELECT id, front, back, created_at, last_review, review_stage, correct_answers, incorrect_answers 
+                 FROM flashcards 
+                 WHERE last_review IS NOT NULL 
+                   AND review_stage = $1
+                   AND NOW() >= last_review + (INTERVAL '1 day' * $2)`
+        
+        rows, err := r.DB.Query(query, stage, interval)
+        if err != nil {
+            return nil, err
+        }
+        defer rows.Close()
+
+        for rows.Next() {
+            var card Flashcard
+            err := rows.Scan(&card.ID, &card.Front, &card.Back, &card.CreatedAt, &card.LastReview,
+                &card.ReviewStage, &card.CorrectAnswers, &card.IncorrectAnswers)
+            if err != nil {
+                return nil, err
+            }
+            dueCards = append(dueCards, card)
+        }
+    }
+
+    return dueCards, nil
+}

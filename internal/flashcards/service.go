@@ -97,3 +97,17 @@ func (s *FlashcardService) UpdateFlashcardFields(id int, correct bool) error {
 	}
 	return nil
 }
+
+func (s *FlashcardService) GetDueFlashcards() ([]byte, error) {
+	dueCards, err := s.repository.GetDueFlashcards()
+	if err != nil {
+		return nil, err
+	}
+
+	jsonFlashcards, err := json.Marshal(dueCards)
+	if err != nil {
+		return nil, errors.New("error in marshal")
+	}
+
+	return jsonFlashcards, nil
+}

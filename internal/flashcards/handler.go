@@ -109,7 +109,7 @@ func (h *FlashcardHandler) UpdateFlashcardFieldsByIDHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid parameters"})
 		return
 	}
-	
+
 	err = h.service.UpdateFlashcardFields(req.ID, req.Correct)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -117,4 +117,15 @@ func (h *FlashcardHandler) UpdateFlashcardFieldsByIDHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "flashcard updated with success"})
+}
+
+func (h *FlashcardHandler) GetDueFlashcardsHandler(c *gin.Context) {
+
+	jsonFlashcards, err := h.service.GetDueFlashcards()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get due flashcards"})
+		return
+	}
+
+	c.Data(http.StatusOK, "application/json", jsonFlashcards)
 }
