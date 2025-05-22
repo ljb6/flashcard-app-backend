@@ -159,3 +159,19 @@ func (h *FlashcardHandler) GetDueFlashcardsHandler(c *gin.Context) {
 
 	c.Data(http.StatusOK, "application/json", jsonFlashcards)
 }
+
+func (h *FlashcardHandler) GenerateFlashcardsHandler(c *gin.Context) {
+
+	var req GenerateFlashcardsReq
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "request format error"})
+		return
+	}
+
+	err = h.service.CreateFlashcardsWithAI(req.Theme)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to generate flashcards"})
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "success"})
+}

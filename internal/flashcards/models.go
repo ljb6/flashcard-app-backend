@@ -16,10 +16,14 @@ type Flashcard struct {
 var ReviewIntervals = []int{0, 1, 3, 7, 15, 30}
 
 type GetFlashcardsReq struct {
-	Quantity int    `json:"quantity"`
+	Quantity int `json:"quantity"`
 }
 
 type UpdateFlashcardFieldsReq struct {
 	ID      int  `json:"id"`
 	Correct bool `json:"correct"`
+}
+
+type GenerateFlashcardsReq struct {
+	Theme string `json:"theme"`
 }
