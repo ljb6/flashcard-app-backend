@@ -16,7 +16,7 @@ func NewFlashcardHandlers(service *FlashcardService) *FlashcardHandler {
 
 func (h *FlashcardHandler) CreateFlashcardHandler(c *gin.Context) {
 
-	var req Flashcard;
+	var req Flashcard
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -53,7 +53,7 @@ func (h *FlashcardHandler) GetFlashcardsHandler(c *gin.Context) {
 }
 
 func (h *FlashcardHandler) DeleteFlashcardByIDHandler(c *gin.Context) {
-	
+
 	var flashcard Flashcard
 	err := c.ShouldBindJSON(&flashcard)
 	if err != nil {
@@ -72,7 +72,7 @@ func (h *FlashcardHandler) DeleteFlashcardByIDHandler(c *gin.Context) {
 
 func (h *FlashcardHandler) EditFlashcardByIDHandler(c *gin.Context) {
 
-	var req Flashcard;
+	var req Flashcard
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -98,4 +98,23 @@ func (h *FlashcardHandler) DeleteAllFlashcardsHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "flashcard deleted with success"})
+}
+
+func (h *FlashcardHandler) UpdateFlashcardFieldsByIDHandler(c *gin.Context) {
+
+	var req UpdateFlashcardFieldsReq
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid parameters"})
+		return
+	}
+	
+	err = h.service.UpdateFlashcardFields(req.ID, req.Correct)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "flashcard updated with success"})
 }

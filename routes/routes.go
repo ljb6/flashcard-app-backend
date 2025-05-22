@@ -19,6 +19,7 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	flashcardGroup.POST("/delete", flashcardsHandler.DeleteFlashcardByIDHandler)
 	flashcardGroup.POST("/deleteall", flashcardsHandler.DeleteAllFlashcardsHandler)
 	flashcardGroup.PATCH("/update", flashcardsHandler.EditFlashcardByIDHandler)
+	flashcardGroup.PATCH("/update-stats", flashcardsHandler.UpdateFlashcardFieldsByIDHandler)
 	// usando POST por conta do body
 	flashcardGroup.POST("/get", flashcardsHandler.GetFlashcardsHandler)
 
